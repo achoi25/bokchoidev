@@ -16,14 +16,13 @@ import Analytics from '@vercel/analytics/astro';
 	</head>
 	<body>
 		<main>
-		
 			<h1 class="terminal">
-  			<span class="text">bokchoi</span><span class="cursor"></span><img src="bokchoi.png" alt="icon" width="50" height="65">
+  			<span class="text">bokchoi</span><span class="cursor"></span><img id="bokchoy-physics" src="bokchoi.png" alt="icon" width="50" height="65">
 			</h1>	
 			<h3> comp sci & stats @ uiuc</h3>
 			<p><a href="/">/home</a> <a href="/projects">/projects</a> <a href="/cv.pdf">/cv</a></p>
 			<p>
-			Hey, I'm Andrew! I'm a developer who enjoys using, working on, and learning about any and all intriguing software. Some of my current areas of interest include:
+			Hey, I'm Andrew! I'm a developer who enjoys using, working on, and learning about any and all intriguing software. My current interests include:
 			</p>
 			<ul>
 			<li>Full-stack development</li>
@@ -48,6 +47,214 @@ import Analytics from '@vercel/analytics/astro';
 					<Icon name="tabler:brand-linkedin" size={22} />
 				</a>
 			</div>
+			<footer>
+			developed using <a href="https://astro.build/">astro</a>
+			</footer>
 		</main>
+
+		<script>
+			const init = () => {
+				const img = document.getElementById('bokchoy-physics') as HTMLImageElement | null;
+				if (!img) return;
+
+				const arm = () => {
+					img.style.cursor = 'grab';
+					img.style.touchAction = 'none';
+					img.style.userSelect = 'none';
+					(img.style as any).webkitUserSelect = 'none';
+					img.draggable = false;
+
+					const onFirstDown = (e: MouseEvent | TouchEvent) => {
+						e.preventDefault();
+						img.removeEventListener('mousedown', onFirstDown as EventListener);
+						img.removeEventListener('touchstart', onFirstDown as EventListener);
+						start(e);
+					};
+					img.addEventListener('mousedown', onFirstDown);
+					img.addEventListener('touchstart', onFirstDown, { passive: false });
+				};
+
+				const start = (initialDown: MouseEvent | TouchEvent) => {
+					const rect = img.getBoundingClientRect();
+					const w = rect.width || img.naturalWidth || 50;
+					const h = rect.height || img.naturalHeight || 65;
+
+					const placeholder = document.createElement('span');
+					placeholder.style.display = 'inline-block';
+					placeholder.style.width = w + 'px';
+					placeholder.style.height = h + 'px';
+					placeholder.style.verticalAlign = window.getComputedStyle(img).verticalAlign || 'baseline';
+					img.parentNode?.insertBefore(placeholder, img);
+
+					Object.assign(img.style, {
+						position: 'fixed',
+						left: '0px',
+						top: '0px',
+						margin: '0',
+						willChange: 'transform',
+						cursor: 'grabbing',
+						zIndex: '9999',
+						transformOrigin: '50% 50%',
+					});
+
+					let cx = rect.left + w / 2;
+					let cy = rect.top + h / 2;
+					let vx = 0, vy = 0;
+					let psi = 0, omega = 0;
+
+					const g = 3500;
+					const mass = 1;
+					const I = mass * (w * w + h * h) / 12;
+					const linDamp = 0.999;
+					const angDamp = 0.992;
+					const restitution = 0.35;
+					const angRestitution = 0.8;
+					const floorFriction = 0.75;
+
+					const springK = 300;
+					const springC = 90;
+
+					let dragging = false;
+					let mouseX = 0, mouseY = 0;
+					let prevMouseX = 0, prevMouseY = 0;
+					let grabX = 0, grabY = 0;
+
+					const rot = (x: number, y: number, a: number): [number, number] => {
+						const c = Math.cos(a), s = Math.sin(a);
+						return [x * c - y * s, x * s + y * c];
+					};
+
+					const render = () => {
+						img.style.transform = `translate(${cx - w / 2}px, ${cy - h / 2}px) rotate(${psi}rad)`;
+					};
+					render();
+
+					let last = performance.now();
+
+					const tick = (now: number) => {
+						let dt = (now - last) / 1000;
+						last = now;
+						dt = Math.min(dt, 1 / 30);
+
+						const substeps = 4;
+						const sdt = dt / substeps;
+						const linF = Math.pow(linDamp, sdt * 60);
+						const angF = Math.pow(angDamp, sdt * 60);
+
+						for (let s = 0; s < substeps; s++) {
+							let fx = 0, fy = mass * g;
+							let tau = 0;
+
+							if (dragging) {
+								const [rgx, rgy] = rot(grabX, grabY, psi);
+								const grabWx = cx + rgx;
+								const grabWy = cy + rgy;
+
+								const grabVx = vx - omega * rgy;
+								const grabVy = vy + omega * rgx;
+
+								const mVx = (mouseX - prevMouseX) / dt;
+								const mVy = (mouseY - prevMouseY) / dt;
+
+								const sfx = springK * (mouseX - grabWx) - springC * (grabVx - mVx);
+								const sfy = springK * (mouseY - grabWy) - springC * (grabVy - mVy);
+
+								fx += sfx;
+								fy += sfy;
+								tau += rgx * sfy - rgy * sfx;
+							}
+
+							vx = (vx + (fx / mass) * sdt) * linF;
+							vy = (vy + (fy / mass) * sdt) * linF;
+							omega = (omega + (tau / I) * sdt) * angF;
+
+							cx += vx * sdt;
+							cy += vy * sdt;
+							psi += omega * sdt;
+
+							const cA = Math.abs(Math.cos(psi));
+							const sA = Math.abs(Math.sin(psi));
+							const hw = (w * cA + h * sA) / 2;
+							const hh = (w * sA + h * cA) / 2;
+
+							const minX = hw, maxX = window.innerWidth - hw;
+							const minY = hh, maxY = window.innerHeight - hh;
+
+							if (cx < minX) { cx = minX; if (vx < 0) vx = -vx * restitution; omega *= angRestitution; }
+							if (cx > maxX) { cx = maxX; if (vx > 0) vx = -vx * restitution; omega *= angRestitution; }
+							if (cy < minY) { cy = minY; if (vy < 0) vy = -vy * restitution; omega *= angRestitution; }
+							if (cy > maxY) {
+								cy = maxY;
+								if (vy > 0) vy = -vy * restitution;
+								vx *= floorFriction;
+								omega *= angRestitution;
+								if (!dragging && Math.abs(vy) < 40) vy = 0;
+							}
+						}
+
+						prevMouseX = mouseX;
+						prevMouseY = mouseY;
+
+						render();
+						requestAnimationFrame(tick);
+					};
+					requestAnimationFrame(tick);
+
+					const hit = (px: number, py: number) => {
+						const [lx, ly] = rot(px - cx, py - cy, -psi);
+						return Math.abs(lx) <= w / 2 && Math.abs(ly) <= h / 2;
+					};
+
+					const pt = (e: MouseEvent | TouchEvent): [number, number] => {
+						if ('touches' in e && e.touches[0]) {
+							return [e.touches[0].clientX, e.touches[0].clientY];
+						}
+						const me = e as MouseEvent;
+						return [me.clientX, me.clientY];
+					};
+
+					const onDown = (e: MouseEvent | TouchEvent) => {
+						const [px, py] = pt(e);
+						if (!hit(px, py)) return;
+						e.preventDefault();
+						dragging = true;
+						const [lx, ly] = rot(px - cx, py - cy, -psi);
+						grabX = lx;
+						grabY = ly;
+						mouseX = prevMouseX = px;
+						mouseY = prevMouseY = py;
+						img.style.cursor = 'grabbing';
+					};
+					const onMove = (e: MouseEvent | TouchEvent) => {
+						if (!dragging) return;
+						const [px, py] = pt(e);
+						mouseX = px;
+						mouseY = py;
+					};
+					const onUp = () => {
+						if (!dragging) return;
+						dragging = false;
+						img.style.cursor = 'grab';
+					};
+
+					img.addEventListener('mousedown', onDown);
+					window.addEventListener('mousemove', onMove);
+					window.addEventListener('mouseup', onUp);
+					img.addEventListener('touchstart', onDown, { passive: false });
+					window.addEventListener('touchmove', onMove, { passive: false });
+					window.addEventListener('touchend', onUp);
+					onDown(initialDown);
+				};
+
+				if (img.complete && img.naturalWidth > 0) arm();
+				else img.addEventListener('load', arm, { once: true });
+			};
+
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', init);
+			} else {
+				init();
+			}
+		</script>
 	</body>
 </html>
