@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@iconify-json/tabler": "^1.2.38",
+    "@vercel/analytics": "^2.0.1",
     "astro": "^7.1.6",
     "astro-icon": "^1.1.5"
   }
