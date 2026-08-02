@@ -1,0 +1,215 @@
+@font-face {
+    font-family: "Cello Sans";
+    src: url("../fonts/hinted-CelloSans-Regular.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Cello Sans";
+    src: url("../fonts/hinted-CelloSans-Italic.woff2") format("woff2");
+    font-weight: 400;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Cello Sans";
+    src: url("../fonts/hinted-CelloSans-Light.woff2") format("woff2");
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Cello Sans";
+    src: url("../fonts/hinted-CelloSans-LightItalic.woff2") format("woff2");
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Cello Sans";
+    src: url("../fonts/hinted-CelloSans-Medium.woff2") format("woff2");
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Cello Sans";
+    src: url("../fonts/hinted-CelloSans-MediumItalic.woff2") format("woff2");
+    font-weight: 500;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Cello Sans";
+    src: url("../fonts/hinted-CelloSans-Bold.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Cello Sans";
+    src: url("../fonts/hinted-CelloSans-BoldItalic.woff2") format("woff2");
+    font-weight: 700;
+    font-style: italic;
+}
+
+:root {
+    --bg: #2b2b2b;
+    --surface: #353535;
+    --text: #f2f2f2;
+    --muted: #b8b8b8;
+    --accent: #7db8ff;
+    --accent-hover: #a7d0ff;
+    --border: #474747;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Cello Sans", Inter, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+}
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+main {
+    animation: fadein 0.15s ease-in;
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+h1 {
+    font-size: 2.2rem;
+    margin: 0;
+    font-weight: 700;
+}
+
+h2 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.25rem;
+    font-size: 1.2rem;
+}
+
+h3 {
+    margin-top: 0.25rem;
+    margin-bottom: 1rem;
+    color: var(--muted);
+    font-weight: 400;
+}
+
+p {
+    margin: 0.75rem 0;
+}
+
+ul {
+    margin-top: 0.25rem;
+    margin-bottom: 1rem;
+    padding-left: 1.4rem;
+}
+
+li {
+    margin: 0.2rem 0;
+}
+
+nav {
+    display: flex;
+    gap: 1.5rem;
+    margin: 2rem 0 3rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+}
+
+a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+a:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+}
+
+.icon-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    align-items: center;
+}
+
+.icon-links a {
+    display: flex;
+    color: var(--muted);
+    transition: color 0.15s ease;
+}
+
+.icon-links a:hover {
+    color: var(--accent-hover);
+    text-decoration: none;
+}
+
+footer {
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    color: var(--muted);
+}
+
+.terminal {
+    display: inline-flex;
+    align-items: baseline;
+    font-family: "Lucida Console", Consolas, "Courier New", monospace;
+}
+
+.text {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+
+    max-width: 0;
+
+    animation: typing 1.3s steps(7, end) forwards;
+}
+
+.cursor {
+    width: 0.65em;
+    height: 1.1em;
+    margin-left: 0.05em;
+
+    background: white;
+
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes typing {
+    from {
+        max-width: 0;
+    }
+    to {
+        max-width: 7ch;
+    }
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}

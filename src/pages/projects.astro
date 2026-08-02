@@ -1,0 +1,47 @@
+---
+import "../styles/global.css";
+import { Icon } from "astro-icon/components";
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>projects</title>
+	</head>
+	<body>
+		<main>
+			<h1>Selected Projects</h1>
+			<p><a href="/">/home</a> <a href="/projects">/projects</a> <a href="/cv.pdf">/cv</a></p>
+			<h2>MariaDB Parquet Plugin</h2>
+			<ul>
+			<li>For those who want to export to columnar storage</li>
+			<li>Wrote the handler for a plugin enabling exporting tables to Apache Parquet files</li>
+			</ul>
+			<h2><a href="https://github.com/achoi25/PythonMaxxing">Pythonmaxxing</a></h2>
+			<ul>
+			<li>For those who want to become pythonic</li>
+			<li>Built a template-based list and dictionary comprehension prompt generator</li>
+			</ul>
+			<h2><a href="https://github.com/RohitDatta06/FPLpredict">FPL Predictor</a></h2>
+			<ul>
+			<li>For those who want to beat their friends in Fantasy Premier League</li>
+			<li>Implemented an ensemble of machine learning models (XGBoost, Random Forest, Linear Regression) to predict expected FPL points for all players every gameweek</li>
+			</ul>
+			<div class="icon-links">
+				<a href="https://github.com/achoi25" aria-label="GitHub">
+					<Icon name="tabler:brand-github" size={22} />
+				</a>
+				<a href="mailto:alcachoice@gmail.com" aria-label="Email">
+					<Icon name="tabler:mail" size={22} />
+				</a>
+				<a href="https://linkedin.com/in/andrewchoij" aria-label="LinkedIn">
+					<Icon name="tabler:brand-linkedin" size={22} />
+				</a>
+			</div>
+		</main>
+	</body>
+</html>
