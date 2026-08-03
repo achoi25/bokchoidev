@@ -1,7 +1,8 @@
 ---
 import "../styles/global.css";
 import { Icon } from "astro-icon/components";
-import Analytics from '@vercel/analytics/astro';
+import Analytics from '@vercel/analytics/astro'
+const path = Astro.url.pathname;
 ---
 
 <html lang="en">
@@ -20,7 +21,11 @@ import Analytics from '@vercel/analytics/astro';
   			<span class="text">bokchoi</span><span class="cursor"></span><img id="bokchoy-physics" src="bokchoi.png" alt="icon" width="50" height="65">
 			</h1>	
 			<h3> comp sci & stats @ uiuc</h3>
-			<p><a href="/">/home</a> <a href="/projects">/projects</a> <a href="/cv.pdf">/cv</a></p>
+			<p>
+				<a href="/" class={path === "/" ? "active" : ""}>/home</a>{" "}
+				<a href="/projects" class={path === "/projects" ? "active" : ""}>/projects</a>{" "}
+				<a href="/cv.pdf">/cv</a>
+			</p>
 			<p>
 			Hey, I'm Andrew! I'm a developer who enjoys using, working on, and learning about any and all intriguing software. My current interests include:
 			</p>
@@ -34,7 +39,7 @@ import Analytics from '@vercel/analytics/astro';
 			I've also had the recent privilege of working as a Software Engineering intern at <a href="https://antithesis.com">Antithesis</a>, building software to crush bugs and enable fearless development.
 			</p>
 			<p>
-			When I'm not at <a href="https://en.wikipedia.org/wiki/Grainger_Engineering_Library">the best library ever</a>, you can likely find me at the badminton courts, playing and listening to music, or whistling. Reach out if you have any questions, or just want to chat!
+			When I'm not at <a href="https://en.wikipedia.org/wiki/Grainger_Engineering_Library" target="_blank" rel="noopener noreferrer">the best library ever</a>, you can likely find me at the badminton courts, playing and listening to music, or whistling. Reach out if you have any questions, or just want to chat!
 			</p>
 			<div class="icon-links">
 				<a href="https://github.com/achoi25" aria-label="GitHub">
@@ -111,8 +116,8 @@ import Analytics from '@vercel/analytics/astro';
 					const angRestitution = 0.8;
 					const floorFriction = 0.75;
 
-					const springK = 300;
-					const springC = 90;
+					const springK = 100;
+					const springC = 30;
 
 					let dragging = false;
 					let mouseX = 0, mouseY = 0;

@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import { Icon } from "astro-icon/components";
+const path = Astro.url.pathname;
 ---
 
 <html lang="en">
@@ -15,35 +16,42 @@ import { Icon } from "astro-icon/components";
 	<body>
 		<main>
 			<h1>Selected Projects</h1>
-			<p><a href="/">/home</a> <a href="/projects">/projects</a> <a href="/cv.pdf">/cv</a></p>
+			<p>
+				<a href="/" class={path === "/" ? "active" : ""}>/home</a>{" "}
+				<a href="/projects" class={path === "/projects" ? "active" : ""}>/projects</a>{" "}
+				<a href="/cv.pdf">/cv</a>
+			</p>
 			<h2>MariaDB Parquet Plugin</h2>
 			<ul>
 			<li>For those who want to export to columnar storage</li>
 			<li>Wrote the handler for a plugin enabling exporting tables to Apache Parquet files</li>
 			</ul>
-			<h2><a href="https://github.com/achoi25/PythonMaxxing">Pythonmaxxing</a></h2>
+			<h2><a href="https://github.com/achoi25/PythonMaxxing" target="_blank" rel="noopener noreferrer">Pythonmaxxing</a></h2>
 			<ul>
 			<li>For those who want to become pythonic</li>
 			<li>Built a template-based list and dictionary comprehension prompt generator</li>
 			<li>Used Pyiodide to evaluate comprehensions entirely client-side</li>
-			<li>Try it <a href="https://pythonmaxx.onrender.com">here!</a></li>
+			<li>Try it <a href="https://pythonmaxx.onrender.com" target="_blank" rel="noopener noreferrer">here!</a></li>
 			</ul>
-			<h2><a href="https://github.com/RohitDatta06/FPLpredict">FPL Predictor</a></h2>
+			<h2><a href="https://github.com/RohitDatta06/FPLpredict" target="_blank" rel="noopener noreferrer">FPL Predictor</a></h2>
 			<ul>
 			<li>For those who want to beat their friends in Fantasy Premier League</li>
 			<li>Implemented an ensemble of machine learning models (XGBoost, Random Forest, Linear Regression) to predict expected FPL points for all players every gameweek</li>
 			</ul>
 			<div class="icon-links">
-				<a href="https://github.com/achoi25" aria-label="GitHub">
+				<a href="https://github.com/achoi25" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
 					<Icon name="tabler:brand-github" size={22} />
 				</a>
-				<a href="mailto:alcachoice@gmail.com" aria-label="Email">
+				<a href="mailto:alcachoice@gmail.com" target="_blank" rel="noopener noreferrer" aria-label="Email">
 					<Icon name="tabler:mail" size={22} />
 				</a>
-				<a href="https://linkedin.com/in/andrewchoij" aria-label="LinkedIn">
+				<a href="https://linkedin.com/in/andrewchoij" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
 					<Icon name="tabler:brand-linkedin" size={22} />
 				</a>
 			</div>
+			<footer>
+			developed using <a href="https://astro.build/" target="_blank" rel="noopener noreferrer">astro</a>
+			</footer>
 		</main>
 	</body>
 </html>
