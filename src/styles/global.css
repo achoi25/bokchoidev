@@ -181,7 +181,8 @@ footer {
     position: fixed;
     bottom: 0;
 
-    width: 600px;
+    max-width: 600px;
+    width: 100%;
     left: 50%;
     transform: translateX(-50%);
 
